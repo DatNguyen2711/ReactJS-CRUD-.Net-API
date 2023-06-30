@@ -46,7 +46,10 @@ const Createbtn = ({ data, setProductData }) => {
         process.env.REACT_APP_LINK,
         productData
       );
-
+      if (response.status === 200) {
+        const response = await axios.get(process.env.REACT_APP_LINK);
+        setProductData(response.data);
+      }
       return response.data;
     } catch (error) {
       console.error(error);
@@ -108,7 +111,13 @@ const Createbtn = ({ data, setProductData }) => {
             >
               Cancel
             </Button>
-            <Button variant="contained" onClick={createProduct}>
+
+            <Button
+              open={open}
+              onClose={handleClose}
+              variant="contained"
+              onClick={createProduct}
+            >
               Create
             </Button>
           </div>

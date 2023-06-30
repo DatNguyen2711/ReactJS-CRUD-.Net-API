@@ -12,11 +12,23 @@ import { useState } from "react";
 import Deletebtn from "./Deletebtn";
 import Updatebtn from "./Updatebtn";
 import Createbtn from "./Createbtn";
-
+import { AudioOutlined } from "@ant-design/icons";
+import { Input, Space } from "antd";
 //gọi Ây pi ai
-export default function DenseTable() {
-  const [data, setProductData] = useState([]);
 
+export default function DenseTable() {
+
+  const [data, setProductData] = useState([]);
+const { Search } = Input;
+
+const suffix = (
+  <AudioOutlined
+    style={{
+      fontSize: 16,
+      color: "#1677ff",
+    }}
+  />
+);
   const getAllProducts = async () => {
     try {
       const response = await axios.get(process.env.REACT_APP_LINK);
@@ -43,6 +55,12 @@ export default function DenseTable() {
           Show my record
         </Button>
         <Createbtn data={data} setProductData={setProductData} />
+        <Search
+          placeholder="input search text"
+          allowClear
+          enterButton="Search"
+          size="large"
+        />
       </div>
 
       <TableContainer component={Paper}>
