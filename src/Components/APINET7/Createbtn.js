@@ -7,7 +7,7 @@ import { TextField } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 
-const Createbtn = ({ data, setProductData }) => {
+const Createbtn = ({ data, setProductData, props }) => {
   const style = {
     position: "absolute",
     top: "50%",
@@ -41,21 +41,42 @@ const Createbtn = ({ data, setProductData }) => {
       place: place,
     };
 
+    // Cách thứ nhất để kiểm tra thuộc tính null, rỗng, undefined của đối tượng
+    // const checkProperties = (productData) => {
+    //   for (let key in productData) {
+    //     if (productData[key] === "") {
+    //       return false;
+    //     }
+    //   }
+    //   return true;
+    // };
+
+    // Cách thứ hai để kiểm tra thuộc tính null, rỗng, undefined của đối tượng
+    const checkProperties = (productData) => {
+      return Object.values(productData).every((value) => value !== "");
+    };
+
     try {
-      const response = await axios.post(
-        process.env.REACT_APP_LINK,
-        productData
-      );
-      if (response.status === 200) {
-        const response = await axios.get(process.env.REACT_APP_LINK);
-        setProductData(response.data);
+      if (checkProperties(productData)) {
+        const response = await axios.post(
+          process.env.REACT_APP_LINK,
+          productData
+        );
+
+        if (response.status === 200) {
+          const response = await axios.get(process.env.REACT_APP_LINK);
+          setProductData(response.data);
+        }
+        return response.data;
+      } else {
+        alert("mày điền thiếu rồi");
       }
-      return response.data;
     } catch (error) {
       console.error(error);
       throw error;
     }
   };
+
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
