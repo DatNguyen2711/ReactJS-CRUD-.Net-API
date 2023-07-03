@@ -7,7 +7,7 @@ import { TextField } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 
-const Createbtn = ({ data, setProductData, props }) => {
+const Createbtn = ({ data, setProductData }) => {
   const style = {
     position: "absolute",
     top: "50%",
@@ -50,7 +50,7 @@ const Createbtn = ({ data, setProductData, props }) => {
     //   }
     //   return true;
     // };
-
+    
     // Cách thứ hai để kiểm tra thuộc tính null, rỗng, undefined của đối tượng
     const checkProperties = (productData) => {
       return Object.values(productData).every((value) => value !== "");
