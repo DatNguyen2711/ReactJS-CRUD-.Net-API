@@ -6,7 +6,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Button, Grid } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  Grid,
+  OutlinedInput,
+  useFormControl,
+} from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 import Deletebtn from "./Deletebtn";
@@ -14,21 +20,19 @@ import Updatebtn from "./Updatebtn";
 import Createbtn from "./Createbtn";
 import { AudioOutlined } from "@ant-design/icons";
 import { Input, Space } from "antd";
-//gọi Ây pi ai
+import FormHelperText from "@mui/material/FormHelperText";
+
+function MyFormHelperText() {
+  const { focused } = useFormControl() || {};
+
+  const helperText = React.useMemo(() => {}, [focused]);
+
+  return <FormHelperText>{helperText}</FormHelperText>;
+}
 
 export default function DenseTable() {
-
   const [data, setProductData] = useState([]);
-const { Search } = Input;
 
-const suffix = (
-  <AudioOutlined
-    style={{
-      fontSize: 16,
-      color: "#1677ff",
-    }}
-  />
-);
   const getAllProducts = async () => {
     try {
       const response = await axios.get(process.env.REACT_APP_LINK);
@@ -48,24 +52,31 @@ const suffix = (
         }}
       >
         <Button
-          sx={{ margin: 10 }}
+          sx={{ margin: 3, height: "44.5px" }}
           variant="contained"
           onClick={getAllProducts}
         >
           Show my record
         </Button>
         <Createbtn data={data} setProductData={setProductData} />
-        <Search
-          placeholder="input search text"
-          allowClear
-          enterButton="Search"
+        <div style={{ marginLeft: "70px" }}>
+          <FormControl sx={{ width: "25ch" }}>
+            <OutlinedInput placeholder="Please enter text" />
+            <MyFormHelperText />
+          </FormControl>
+        </div>
+        <Button
+          style={{ height: "56px", backgroundColor: "orangered" }}
+          variant="contained"
           size="large"
-        />
+        >
+          Search
+        </Button>
       </div>
 
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 400 }} size="small" aria-label="a dense table">
-          <TableHead>
+          <TableHead style={{ backgroundColor: "gray", height: "30px" }}>
             <TableRow>
               <TableCell align="center">STT</TableCell>
               <TableCell align="center">Name</TableCell>

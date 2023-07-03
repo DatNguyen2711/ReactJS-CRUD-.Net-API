@@ -3,7 +3,7 @@ import DenseTable from "./Components/APINET7/Manage";
 function App() {
   return (
     <div>
-      <DenseTable />
+     <DenseTable>CC</DenseTable>
     </div>
   );
 }
