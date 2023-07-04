@@ -50,7 +50,7 @@ const Createbtn = ({ data, setProductData }) => {
     //   }
     //   return true;
     // };
-    
+
     // Cách thứ hai để kiểm tra thuộc tính null, rỗng, undefined của đối tượng
     const checkProperties = (productData) => {
       return Object.values(productData).every((value) => value !== "");
