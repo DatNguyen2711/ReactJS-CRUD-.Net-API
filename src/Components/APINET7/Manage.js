@@ -31,11 +31,6 @@ function MyFormHelperText() {
 
 export default function DenseTable() {
   const [data, setProductData] = useState([]);
-  const [searchVal, setSearchVal] = useState("");
-
-  // Chuẩn hóa chuỗi tiếng Việt
-  const normalizedSearchVal = nfc(searchVal);
-
   const getAllProducts = async () => {
     try {
       const response = await axios.get(process.env.REACT_APP_LINK);
@@ -45,25 +40,19 @@ export default function DenseTable() {
       console.error(error);
     }
   };
-  function handleSearchClick() {
-    if (searchVal === "") {
-      setProductData(data);
-      return;
+  const [searchVal, setSearchVal] = useState('');
+  const getAllProductsByName = async (searchVal) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_LINK_SEARCH_NAME}name=${searchVal}`
+      );
+      setProductData(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
     }
-    const filterBySearch = data.filter((item) => {
-      // Chuẩn hóa giá trị tìm kiếm
-      const normalizedSearchVal = nfc(searchVal);
+  };
 
-      // So sánh giá trị tìm kiếm với các thuộc tính của item
-      if (
-        nfc(item.name).includes(normalizedSearchVal) 
-      ) {
-        return item;
-      }
-    });
-
-    setProductData(filterBySearch);
-  }
   return (
     <div>
       <div
@@ -93,7 +82,7 @@ export default function DenseTable() {
           style={{ height: "56px", backgroundColor: "orangered" }}
           variant="contained"
           size="large"
-          onClick={handleSearchClick}
+          onClick={()=>getAllProductsByName(searchVal)}
         >
           Search
         </Button>
