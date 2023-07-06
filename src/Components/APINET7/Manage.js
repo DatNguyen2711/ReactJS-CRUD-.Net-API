@@ -5,7 +5,6 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { nfc } from "unorm";
 import Paper from "@mui/material/Paper";
 import {
   Button,
@@ -40,12 +39,14 @@ export default function DenseTable() {
       console.error(error);
     }
   };
-  const [searchVal, setSearchVal] = useState('');
+  const [searchVal, setSearchVal] = useState("");
+
   const getAllProductsByName = async (searchVal) => {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_LINK_SEARCH_NAME}name=${searchVal}`
       );
+
       setProductData(response.data);
       console.log(response.data);
     } catch (error) {
@@ -73,7 +74,12 @@ export default function DenseTable() {
           <FormControl sx={{ width: "25ch" }}>
             <OutlinedInput
               placeholder="Please enter text"
-              onChange={(e) => setSearchVal(e.target.value)}
+              onChange={(e) => {
+                if (e.target.value === "") {
+                  getAllProducts();
+                }
+                setSearchVal(e.target.value);
+              }}
             />
             <MyFormHelperText />
           </FormControl>
@@ -82,7 +88,7 @@ export default function DenseTable() {
           style={{ height: "56px", backgroundColor: "orangered" }}
           variant="contained"
           size="large"
-          onClick={()=>getAllProductsByName(searchVal)}
+          onClick={() => getAllProductsByName(searchVal)}
         >
           Search
         </Button>
