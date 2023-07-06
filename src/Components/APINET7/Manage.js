@@ -5,6 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { nfc } from "unorm";
 import Paper from "@mui/material/Paper";
 import {
   Button,
@@ -30,6 +31,10 @@ function MyFormHelperText() {
 
 export default function DenseTable() {
   const [data, setProductData] = useState([]);
+  const [searchVal, setSearchVal] = useState("");
+
+  // Chuẩn hóa chuỗi tiếng Việt
+  const normalizedSearchVal = nfc(searchVal);
 
   const getAllProducts = async () => {
     try {
@@ -40,7 +45,25 @@ export default function DenseTable() {
       console.error(error);
     }
   };
+  function handleSearchClick() {
+    if (searchVal === "") {
+      setProductData(data);
+      return;
+    }
+    const filterBySearch = data.filter((item) => {
+      // Chuẩn hóa giá trị tìm kiếm
+      const normalizedSearchVal = nfc(searchVal);
 
+      // So sánh giá trị tìm kiếm với các thuộc tính của item
+      if (
+        nfc(item.name).includes(normalizedSearchVal) 
+      ) {
+        return item;
+      }
+    });
+
+    setProductData(filterBySearch);
+  }
   return (
     <div>
       <div
@@ -59,7 +82,10 @@ export default function DenseTable() {
         <Createbtn data={data} setProductData={setProductData} />
         <div style={{ marginLeft: "70px" }}>
           <FormControl sx={{ width: "25ch" }}>
-            <OutlinedInput placeholder="Please enter text" />
+            <OutlinedInput
+              placeholder="Please enter text"
+              onChange={(e) => setSearchVal(e.target.value)}
+            />
             <MyFormHelperText />
           </FormControl>
         </div>
@@ -67,13 +93,14 @@ export default function DenseTable() {
           style={{ height: "56px", backgroundColor: "orangered" }}
           variant="contained"
           size="large"
+          onClick={handleSearchClick}
         >
           Search
         </Button>
       </div>
 
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 400 }} size="small" aria-label="a dense table">
+        <Table sx={{ minWidth: 260 }} size="small" aria-label="a dense table">
           <TableHead style={{ backgroundColor: "gray", height: "30px" }}>
             <TableRow>
               <TableCell align="center">STT</TableCell>
