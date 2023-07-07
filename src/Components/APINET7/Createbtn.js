@@ -7,7 +7,7 @@ import { TextField } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 
-const Createbtn = ({ data, setProductData }) => {
+const Createbtn = ({ data, setProductData, setResetkey }) => {
   const style = {
     position: "absolute",
     top: "50%",
@@ -67,6 +67,7 @@ const Createbtn = ({ data, setProductData }) => {
           const response = await axios.get(process.env.REACT_APP_LINK);
           setProductData(response.data);
         }
+        setResetkey(prev => prev+1)
         return response.data;
       } else {
         alert("mày điền thiếu rồi");

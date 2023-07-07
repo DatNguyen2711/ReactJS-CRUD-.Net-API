@@ -29,6 +29,7 @@ function MyFormHelperText() {
 
 export default function DenseTable() {
   const [data, setProductData] = useState([]);
+  const [resetKey, setResetkey] = useState(1);
   const getAllProducts = async () => {
     try {
       const response = await axios.get(process.env.REACT_APP_LINK);
@@ -68,7 +69,11 @@ export default function DenseTable() {
         >
           Show my record
         </Button>
-        <Createbtn data={data} setProductData={setProductData} />
+        <Createbtn
+          setResetkey={setResetkey}
+          data={data}
+          setProductData={setProductData}
+        />
         <div style={{ marginLeft: "70px" }}>
           <FormControl sx={{ width: "25ch" }}>
             <OutlinedInput
@@ -91,7 +96,7 @@ export default function DenseTable() {
         >
           Search
         </Button>
-        <SelectName />
+        <SelectName key={resetKey} />
       </div>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 260 }} size="small" aria-label="a dense table">
@@ -124,6 +129,7 @@ export default function DenseTable() {
                 >
                   <Deletebtn
                     productId={row.id}
+                    setResetkey={setResetkey}
                     setProductData={setProductData}
                   />
 
