@@ -17,9 +17,8 @@ import { useState } from "react";
 import Deletebtn from "./Deletebtn";
 import Updatebtn from "./Updatebtn";
 import Createbtn from "./Createbtn";
-
 import FormHelperText from "@mui/material/FormHelperText";
-
+import SelectName from "./SelectName";
 function MyFormHelperText() {
   const { focused } = useFormControl() || {};
 
@@ -92,8 +91,8 @@ export default function DenseTable() {
         >
           Search
         </Button>
+        <SelectName />
       </div>
-
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 260 }} size="small" aria-label="a dense table">
           <TableHead style={{ backgroundColor: "gray", height: "30px" }}>
