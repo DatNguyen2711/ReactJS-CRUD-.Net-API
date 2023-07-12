@@ -22,7 +22,7 @@ const MenuProps = {
 export default function MultipleSelectCheckmarks() {
   const [personName, setPersonName] = useState([]);
   const [names, setNames] = useState([]);
-
+  const [selectedValues, setSelectedValues] = useState([]);
   const getAllProductsName = async () => {
     try {
       const response = await axios.get(process.env.REACT_APP_LINK);
@@ -43,7 +43,12 @@ export default function MultipleSelectCheckmarks() {
       target: { value },
     } = event;
     setPersonName(typeof value === "string" ? value.split(",") : value);
+    setSelectedValues(value);
   };
+
+  useEffect(() => {
+    console.log(selectedValues);
+  }, [selectedValues]);
 
   return (
     <div>

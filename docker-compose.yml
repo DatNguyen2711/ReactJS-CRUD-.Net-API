@@ -1,0 +1,10 @@
+version: '3'
+services:
+  web:
+    image: react-app
+    ports:
+      - "3230:3000"
+    volumes:
+      - .:/app
+    environment:
+      - NODE_ENV=development
