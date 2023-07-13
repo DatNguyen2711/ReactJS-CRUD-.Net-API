@@ -96,7 +96,7 @@ export default function DenseTable() {
         >
           Search
         </Button>
-        <SelectName key={resetKey} />
+        <SelectName setProductData={setProductData} />
       </div>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 260 }} size="small" aria-label="a dense table">

@@ -19,14 +19,11 @@ const MenuProps = {
   },
 };
 
-export default function MultipleSelectCheckmarks({
-  data,
-  setProductData,
-  setResetkey,
-}) {
+export default function MultipleSelectCheckmarks({ setProductData }) {
   const [personName, setPersonName] = useState([]);
   const [names, setNames] = useState([]);
-  const [selectedValues, setSelectedValues] = useState([]);
+
+  // lấy tất cả tên của đối tượng nhét vào droplist
   const getAllProductsName = async () => {
     try {
       const response = await axios.get(process.env.REACT_APP_LINK);
@@ -42,15 +39,16 @@ export default function MultipleSelectCheckmarks({
     getAllProductsName();
   }, []);
 
+  // lấy ra các đối tượng đã chọn trong droplist
   const handleChange = (event) => {
     const {
       target: { value },
     } = event;
     setPersonName(typeof value === "string" ? [value] : value);
-    setSelectedValues(value);
     FilterByname(value);
   };
 
+  // lọc theo tên đã chọn
   const FilterByname = async (selectedValues) => {
     const response = await axios.post(
       process.env.REACT_APP_LINK_SEARCH_NAMELIST,
