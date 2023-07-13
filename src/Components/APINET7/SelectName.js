@@ -19,7 +19,11 @@ const MenuProps = {
   },
 };
 
-export default function MultipleSelectCheckmarks() {
+export default function MultipleSelectCheckmarks({
+  data,
+  setProductData,
+  setResetkey,
+}) {
   const [personName, setPersonName] = useState([]);
   const [names, setNames] = useState([]);
   const [selectedValues, setSelectedValues] = useState([]);
@@ -42,13 +46,19 @@ export default function MultipleSelectCheckmarks() {
     const {
       target: { value },
     } = event;
-    setPersonName(typeof value === "string" ? value.split(",") : value);
+    setPersonName(typeof value === "string" ? [value] : value);
     setSelectedValues(value);
+    FilterByname(value);
   };
 
-  useEffect(() => {
-    console.log(selectedValues);
-  }, [selectedValues]);
+  const FilterByname = async (selectedValues) => {
+    const response = await axios.post(
+      process.env.REACT_APP_LINK_SEARCH_NAMELIST,
+      selectedValues
+    );
+    setProductData(response.data);
+    return response.data;
+  };
 
   return (
     <div>
