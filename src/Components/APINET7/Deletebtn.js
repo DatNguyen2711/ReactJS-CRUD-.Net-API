@@ -13,9 +13,7 @@ const Deletebtn = ({ productId, setProductData, setResetkey }) => {
         setProductData((prev) => prev.filter((item) => item.id !== productId));
         setResetkey((prev) => prev + 1);
       }
-    } catch (error) {
-      // Handle error
-    }
+    } catch (error) {}
   };
 
   return (

@@ -64,10 +64,10 @@ const Createbtn = ({ data, setProductData, setResetkey }) => {
         );
 
         if (response.status === 200) {
-          const response = await axios.get(process.env.REACT_APP_LINK);
+          setProductData((prev) => prev + 1);
           setProductData(response.data);
         }
-        setResetkey(prev => prev+1)
+        setResetkey((prev) => prev + 1);
         return response.data;
       } else {
         alert("mày điền thiếu rồi");
