@@ -19,43 +19,90 @@ const MenuProps = {
   },
 };
 
-export default function MultipleSelectCheckmarks({ setProductData }) {
-  const [personName, setPersonName] = useState([]);
-  const [names, setNames] = useState([]);
+export default function MultipleSelectCheckmarks({
+  setProductData,
+  setResetkey,
+}) {
+  const [Place, setPlace] = useState([]);
+  const provinces = [
+    "An Giang",
+    "Bà Rịa - Vũng Tàu",
+    "Bắc Giang",
+    "Bắc Kạn",
+    "Bạc Liêu",
+    "Bắc Ninh",
+    "Bến Tre",
+    "Bình Định",
+    "Bình Dương",
+    "Bình Phước",
+    "Bình Thuận",
+    "Cà Mau",
+    "Cần Thơ",
+    "Cao Bằng",
+    "Đà Nẵng",
+    "Đắk Lắk",
+    "Đắk Nông",
+    "Điện Biên",
+    "Đồng Nai",
+    "Đồng Tháp",
+    "Gia Lai",
+    "Hà Giang",
+    "Hà Nam",
+    "Hà Nội",
+    "Hà Tĩnh",
+    "Hải Dương",
+    "Hải Phòng",
+    "Hậu Giang",
+    "Hòa Bình",
+    "Hưng Yên",
+    "Khánh Hòa",
+    "Kiên Giang",
+    "Kon Tum",
+    "Lai Châu",
+    "Lâm Đồng",
+    "Lạng Sơn",
+    "Lào Cai",
+    "Long An",
+    "Nam Định",
+    "Nghệ An",
+    "Ninh Bình",
+    "Ninh Thuận",
+    "Phú Thọ",
+    "Phú Yên",
+    "Quảng Bình",
+    "Quảng Nam",
+    "Quảng Ngãi",
+    "Quảng Ninh",
+    "Quảng Trị",
+    "Sóc Trăng",
+    "Sơn La",
+    "Tây Ninh",
+    "Thái Bình",
+    "Thái Nguyên",
+    "Thanh Hóa",
+    "Thừa Thiên Huế",
+    "Tiền Giang",
+    "Trà Vinh",
+    "Tuyên Quang",
+    "Vĩnh Long",
+    "Vĩnh Phúc",
+    "Yên Bái",
+  ];
 
-  // lấy tất cả tên của đối tượng nhét vào droplist
-  const getAllProductsName = async () => {
-    try {
-      const response = await axios.get(process.env.REACT_APP_LINK);
-      const apiData = response.data;
-      const apiNames = apiData.map((item) => item.name);
-      setNames(apiNames);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    getAllProductsName();
-  }, []);
-
-  // lấy ra các đối tượng đã chọn trong droplist
   const handleChange = (event) => {
     const {
       target: { value },
     } = event;
-    setPersonName(typeof value === "string" ? [value] : value);
-    FilterByname(value);
+    setPlace(typeof value === "string" ? [value] : value);
+    FilterByPlace(value);
   };
 
-  // lọc theo tên đã chọn
-  const FilterByname = async (selectedValues) => {
+  const FilterByPlace = async (selectedValues) => {
     const response = await axios.post(
       process.env.REACT_APP_LINK_SEARCH_NAMELIST,
       selectedValues
     );
     setProductData(response.data);
-    return response.data;
   };
 
   return (
@@ -66,15 +113,15 @@ export default function MultipleSelectCheckmarks({ setProductData }) {
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
           multiple
-          value={personName}
+          value={Place}
           onChange={handleChange}
           input={<OutlinedInput label="Name" />}
           renderValue={(selected) => selected.join(", ")}
           MenuProps={MenuProps}
         >
-          {names.map((name) => (
+          {provinces.map((name) => (
             <MenuItem key={name} value={name}>
-              <Checkbox checked={personName.indexOf(name) > -1} />
+              <Checkbox checked={Place.indexOf(name) > -1} />
               <ListItemText primary={name} />
             </MenuItem>
           ))}
