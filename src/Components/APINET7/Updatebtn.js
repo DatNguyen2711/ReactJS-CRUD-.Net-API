@@ -1,13 +1,12 @@
 import * as React from "react";
-import Backdrop from "@mui/material/Backdrop";
+import { useState } from "react";
+import axios from "axios";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { TextField } from "@mui/material";
-import { useState } from "react";
-import axios from "axios";
 
 const style = {
   position: "absolute",
@@ -22,46 +21,47 @@ const style = {
   p: 4,
 };
 
-export default function TransitionsModal({ data, setProductData, productId }) {
-  console.log("data", data);
-  console.log("productId", productId);
+export default function TransitionsModal({
+  data,
+  setProductData,
+  productId,
+  setResetkey,
+}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [editData, setEditData] = React.useState(
-    data.find((item, index) => {
-      return item.id === productId;
-    })
-  );
+
+  const editData = data.find((item) => item.id === productId);
   const [name, setName] = useState(editData.name);
   const [firstName, setFirstName] = useState(editData.firstName);
   const [lastName, setLastName] = useState(editData.lastName);
   const [place, setPlace] = useState(editData.place);
 
-  console.log("editData", editData);
-
   const handleNameChange = (event) => {
-    setName((editData.name = event.target.value));
+    setName(event.target.value);
   };
   const handleFirstNameChange = (event) => {
-    setFirstName((editData.firstName = event.target.value));
+    setFirstName(event.target.value);
   };
   const handleLastNameChange = (event) => {
-    setLastName((editData.lastName = event.target.value));
+    setLastName(event.target.value);
   };
   const handlePlaceChange = (event) => {
-    setPlace((editData.place = event.target.value));
+    setPlace(event.target.value);
   };
   const updateProduct = () => {
     axios
       .put(`${process.env.REACT_APP_LINK}/${productId}`, editData)
       .then((response) => {
         if (response.status === 200) {
+          setResetkey((prev) => prev + 1);
+
           setProductData((prevProductData) =>
             prevProductData.map((item) =>
               item.id === productId ? editData : item
             )
           );
+
           handleClose();
         }
       })
@@ -81,12 +81,6 @@ export default function TransitionsModal({ data, setProductData, productId }) {
         open={open}
         onClose={handleClose}
         closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
       >
         <Fade in={open}>
           <Box sx={style}>
@@ -103,7 +97,7 @@ export default function TransitionsModal({ data, setProductData, productId }) {
               fullWidth
               label="Name"
               id="name"
-              value={editData.name}
+              value={name}
               onChange={handleNameChange}
               sx={{ marginBottom: "30px" }}
             />
@@ -111,7 +105,7 @@ export default function TransitionsModal({ data, setProductData, productId }) {
               fullWidth
               label="First Name"
               id="firstName"
-              value={editData.firstName}
+              value={firstName}
               onChange={handleFirstNameChange}
               sx={{ marginBottom: "30px" }}
             />
@@ -119,7 +113,7 @@ export default function TransitionsModal({ data, setProductData, productId }) {
               fullWidth
               label="Last Name"
               id="lastName"
-              value={editData.lastName}
+              value={lastName}
               onChange={handleLastNameChange}
               sx={{ marginBottom: "30px" }}
             />
@@ -127,7 +121,7 @@ export default function TransitionsModal({ data, setProductData, productId }) {
               fullWidth
               label="Place"
               id="place"
-              value={editData.place}
+              value={place}
               onChange={handlePlaceChange}
               sx={{ marginBottom: "30px" }}
             />
