@@ -1,7 +1,9 @@
 version: '3'
 services:
   web:
-    image: react-app
+    build:
+      context: .
+      dockerfile: dockerfile
     ports:
       - "3230:3000"
     volumes:
