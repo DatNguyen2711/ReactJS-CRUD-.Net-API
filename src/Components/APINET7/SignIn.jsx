@@ -10,23 +10,28 @@ import {
   MDBIcon,
   MDBCheckbox,
 } from "mdb-react-ui-kit";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-} from "firebase/auth";
-import { auth } from "./firebase-config";
-import { useNavigate } from "react-router-dom";
+import { UserAuth } from "../../Context/AuthContext";
+
+import { Link, useNavigate } from "react-router-dom";
 
 function SignIn() {
-  const [email, SetEmail] = useState("");
-  const [password, SetPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
   const navigate = useNavigate();
-  const login = async () => {
-    await signInWithEmailAndPassword(auth, email, password);
-    console.log("Login successful");
-    navigate("/account");
+  const { signIn } = UserAuth();
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    setError("");
+    try {
+      await signIn(email, password);
+      navigate("/account");
+    } catch (e) {
+      setError("Wrong username or password");
+      console.log(e.message);
+    }
   };
 
   return (
@@ -40,7 +45,7 @@ function SignIn() {
             <MDBCardBody className="p-5 w-100 d-flex flex-column">
               <h2 className="fw-bold mb-2 text-center">Sign in</h2>
               <p className="text-center" style={{ marginTop: "15px" }}>
-                Not a member? <a href="#!">Register</a>
+                Not a member? <Link to="/signup">Register</Link>
               </p>
               <p className="text-white-50 mb-3">
                 Please enter your login and password!
@@ -48,7 +53,7 @@ function SignIn() {
 
               {/* Form */}
               <MDBInput
-                onChange={(e) => SetEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 wrapperClass="mb-4 w-100"
                 label="Email address"
                 id="formControlLg"
@@ -56,7 +61,7 @@ function SignIn() {
                 size="lg"
               />
               <MDBInput
-                onChange={(e) => SetPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 wrapperClass="mb-4 w-100"
                 label="Password"
                 id="formControlLg"
@@ -71,9 +76,22 @@ function SignIn() {
                 label="Remember password"
               />
 
-              <MDBBtn type="submit" size="lg" onClick={login}>
+              <MDBBtn type="submit" size="lg" onClick={handleSignIn}>
                 Login
               </MDBBtn>
+              {error && (
+                <p
+                  style={{
+                    color: "red",
+                    alignItems: "center",
+                    justifyItems: "center",
+                    marginTop: "14px",
+                    marginLeft: "90px",
+                  }}
+                >
+                  {error}
+                </p>
+              )}
 
               <hr className="my-4" />
 

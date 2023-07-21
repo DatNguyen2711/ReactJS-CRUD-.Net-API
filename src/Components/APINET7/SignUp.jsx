@@ -10,34 +10,28 @@ import {
   MDBIcon,
   MDBCheckbox,
 } from "mdb-react-ui-kit";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-} from "firebase/auth";
-import { auth } from "./firebase-config";
+import { UserAuth } from "../../Context/AuthContext";
+
 import { Link, useNavigate } from "react-router-dom";
 function SignUp() {
-  const [email, SetEmail] = useState("");
-  const [password, SetPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const { createUser } = UserAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setError("");
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      await createUser(email, password);
       navigate("/account");
-      console.log("Đăng ký thành công!", userCredential.user);
-    } catch (error) {
-      console.error("Lỗi khi đăng ký:", error.message);
+    } catch (e) {
+      setError(e.message);
+      console.log(e.message);
     }
   };
+
   return (
     <MDBContainer fluid>
       <MDBRow className="d-flex justify-content-center align-items-center h-100">
@@ -49,7 +43,7 @@ function SignUp() {
             <MDBCardBody className="p-5 w-100 d-flex flex-column">
               <h2 className="fw-bold mb-2 text-center">Sign Up</h2>
               <p className="text-center" style={{ marginTop: "15px" }}>
-                Already have an account? <a href="#!">Sign In</a>
+                Already have an account? <Link to="/">Sign In</Link>
               </p>
               <p className="text-white-50 mb-3">
                 Please enter your desired email and password!
@@ -58,7 +52,7 @@ function SignUp() {
               <MDBInput
                 wrapperClass="mb-4 w-100"
                 label="Email address"
-                onChange={(e) => SetEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 id="formControlLg"
                 type="email"
                 size="lg"
@@ -66,7 +60,7 @@ function SignUp() {
               <MDBInput
                 wrapperClass="mb-4 w-100"
                 label="Password"
-                onChange={(e) => SetPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 id="formControlLg"
                 type="password"
                 size="lg"
