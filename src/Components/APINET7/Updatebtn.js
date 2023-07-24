@@ -30,24 +30,27 @@ export default function TransitionsModal({
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const editData = data.find((item) => item.id === productId);
+  const [editData, setEditData] = React.useState(
+    data.find((item, index) => {
+      return item.id === productId;
+    })
+  );
   const [name, setName] = useState(editData.name);
   const [firstName, setFirstName] = useState(editData.firstName);
   const [lastName, setLastName] = useState(editData.lastName);
   const [place, setPlace] = useState(editData.place);
 
   const handleNameChange = (event) => {
-    setName(event.target.value);
+    setName((editData.name = event.target.value));
   };
   const handleFirstNameChange = (event) => {
-    setFirstName(event.target.value);
+    setFirstName((editData.firstName = event.target.value));
   };
   const handleLastNameChange = (event) => {
-    setLastName(event.target.value);
+    setLastName((editData.lastName = event.target.value));
   };
   const handlePlaceChange = (event) => {
-    setPlace(event.target.value);
+    setPlace((editData.place = event.target.value));
   };
   const updateProduct = () => {
     axios
@@ -61,7 +64,6 @@ export default function TransitionsModal({
               item.id === productId ? editData : item
             )
           );
-
           handleClose();
         }
       })
